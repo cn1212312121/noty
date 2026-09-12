@@ -11,8 +11,7 @@ URLS = [
     "https://demox.store",
     "https://mobile.demox.store",
     "https://demoy.store",
-    "https://mobile.demoy.store",
-    "http://okcasino11.com"
+    "https://mobile.demoy.store"
 ]
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
