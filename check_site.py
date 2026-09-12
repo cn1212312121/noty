@@ -8,10 +8,18 @@ load_dotenv()
 
 URLS = [
     "https://etmgroup.store/login",
+
     "https://demox.store",
     "https://mobile.demox.store",
+
     "https://demoy.store",
     "https://mobile.demoy.store"
+
+    "https://sriphonetong.com",
+    "https://mobile.sriphonetong.com",
+
+    "https://soydown.com",
+    "https://mobile.soydown.com"
 ]
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
