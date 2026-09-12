@@ -25,7 +25,7 @@ def send_telegram(message):
         timeout=10,
     )
 
-def check_once():
+def check_once(is_first_run=False):
     problems = []
     for url in URLS:
         try:
@@ -37,9 +37,10 @@ def check_once():
 
     if problems:
         send_telegram("\n".join(problems))
-    elif datetime.now(timezone.utc).minute == 0:
+    elif is_first_run or datetime.now(timezone.utc).minute == 0:
         send_telegram("✅ ทุกเว็บปกติ (" + ", ".join(URLS) + ")")
 
+check_once(is_first_run=True)
 while True:
-    check_once()
     time.sleep(CHECK_INTERVAL_SECONDS)
+    check_once()
