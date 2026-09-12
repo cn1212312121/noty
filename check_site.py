@@ -38,7 +38,7 @@ def check_once(is_first_run=False):
     if problems:
         send_telegram("\n".join(problems))
     elif is_first_run or datetime.now(timezone.utc).minute == 0:
-        send_telegram("✅ ทุกเว็บปกติ (" + ", ".join(URLS) + ")")
+        send_telegram("✅ ทุกเว็บปกติ\n" + "\n".join(URLS))
 
 check_once(is_first_run=True)
 while True:
