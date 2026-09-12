@@ -13,7 +13,7 @@ URLS = [
     "https://mobile.demox.store",
 
     "https://demoy.store",
-    "https://mobile.demoy.store"
+    "https://mobile.demoy.store",
 
     "https://sriphonetong.com",
     "https://mobile.sriphonetong.com",
