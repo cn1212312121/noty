@@ -1,7 +1,10 @@
 import os
-import sys
+import time
 from datetime import datetime, timezone
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 URLS = [
     "https://etmgroup.store/login",
@@ -13,6 +16,7 @@ URLS = [
 ]
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+CHECK_INTERVAL_SECONDS = int(os.environ.get("CHECK_INTERVAL_SECONDS", 300))
 
 def send_telegram(message):
     requests.post(
@@ -21,18 +25,21 @@ def send_telegram(message):
         timeout=10,
     )
 
-problems = []
+def check_once():
+    problems = []
+    for url in URLS:
+        try:
+            resp = requests.get(url, timeout=10)
+            if resp.status_code >= 400:
+                problems.append(f"⚠️ {url} ตอบ status {resp.status_code}")
+        except requests.RequestException as e:
+            problems.append(f"😱🔴 {url} ล่ม/เข้าไม่ได้: {e}")
 
-for url in URLS:
-    try:
-        resp = requests.get(url, timeout=10)
-        if resp.status_code >= 400:
-            problems.append(f"⚠️ {url} ตอบ status {resp.status_code}")
-    except requests.RequestException as e:
-        problems.append(f"😱🔴 {url} ล่ม/เข้าไม่ได้: {e}")
+    if problems:
+        send_telegram("\n".join(problems))
+    elif datetime.now(timezone.utc).minute == 0:
+        send_telegram("✅ ทุกเว็บปกติ (" + ", ".join(URLS) + ")")
 
-if problems:
-    send_telegram("\n".join(problems))
-    sys.exit(1)
-elif datetime.now(timezone.utc).minute == 0:
-    send_telegram("✅ ทุกเว็บปกติ (" + ", ".join(URLS) + ")")
+while True:
+    check_once()
+    time.sleep(CHECK_INTERVAL_SECONDS)
